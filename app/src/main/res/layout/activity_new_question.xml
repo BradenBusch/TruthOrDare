@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/baby_blue_magenta_ombre">
+
+    <!-- add a back arrow -->
+
+    <ImageButton
+        android:id="@+id/addQuestionBackBtn"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/ic_back_arrow"
+        android:background="@android:color/transparent"
+        />
+
+    <EditText
+        android:id="@+id/userQuestionEntry"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginRight="50dp"
+        android:hint="Type a question"
+        android:background="#FFFFFF"/>
+
+    <Button
+        android:id="@+id/addToTruthBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userQuestionEntry"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="20dp"
+        android:text="Add to Truths"
+        android:textAllCaps="false"
+        android:background="@drawable/custom_button_white"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <Button
+        android:id="@+id/addToDareBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="75dp"
+        android:layout_below="@+id/userQuestionEntry"
+        android:layout_marginTop="20dp"
+        android:text="Add to Dares"
+        android:textAllCaps="false"
+        android:background="@drawable/custom_button_white"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+</RelativeLayout>

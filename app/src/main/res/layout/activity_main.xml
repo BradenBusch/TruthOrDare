@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:paddingTop="150dp"
+    android:background="@drawable/baby_blue_magenta_ombre">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/initTruthButton"
+            android:text="Truth"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:background="@drawable/custom_button_white"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true">
+        </Button>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orPhrase"
+            android:layout_below="@+id/initTruthButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="or"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/initDareButton"
+            android:text="Dare"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:background="@drawable/custom_button_white"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/orPhrase">
+        </Button>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/goToAddQuestionBtn"
+        android:layout_marginRight="125dp"
+        android:layout_marginLeft="125dp"
+        android:text="Add Question"
+        android:textAllCaps="false"
+        android:textSize="18dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/custom_button_baby_blue"
+        android:textColor="@color/colorBabyBlue"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewDareQuestionHomeBtn"
+        android:layout_marginRight="125dp"
+        android:layout_marginLeft="125dp"
+        android:text="View Dares"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:layout_above="@id/goToAddQuestionBtn"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button_baby_blue"
+        android:textColor="@color/colorBabyBlue"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewTruthQuestionHomeBtn"
+        android:layout_marginRight="125dp"
+        android:layout_marginLeft="125dp"
+        android:text="View Truths"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:layout_above="@id/viewDareQuestionHomeBtn"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button_baby_blue"
+        android:textColor="@color/colorBabyBlue"/>
+
+
+</RelativeLayout>
