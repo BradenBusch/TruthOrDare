@@ -14,20 +14,21 @@ public class GameMaker {
     private static final String TRUTH_FILE_NAME = "storageTruth.txt";
     private static final String DARES_LIST = "DaresList";
     private static final String TRUTHS_LIST = "TruthsList";
+    private static final String CACHED_DARES = "CachedDares";
+    private static final String CACHED_TRUTHS = "CachedTruths";
     private ArrayList<String> dares = new ArrayList<>(); // array that holds questions for use in-game
     private ArrayList<String> truths = new ArrayList<>(); // array that holds questions for use in-game
     private Context cntx;
     private TinyDB tinyDB;
 
 
+    // TODO delete is deleting one index off currently
 
-    // Constructor
     public GameMaker(Context cntx) {
         this.cntx = cntx; //class's context
         this.tinyDB = new TinyDB(cntx); //class's DB
-        initWriteToDB(cntx); // fills arraylists with base questions
+        initArrayFill(cntx); // fills arraylists with base questions from .txt files
         ArrayList<String> test = tinyDB.getListString(DARES_LIST);
-
         if (test != null) {
             return;
         }
@@ -36,48 +37,35 @@ public class GameMaker {
     }
 
 
-//    // Adds all the initial questions to internal storage and the ArrayLists.
-//    public void writeBaseQuestions (Context c) {
-//        AssetManager am = c.getAssets();
-//        FileOutputStream fos = null;
-//        try {
-//            InputStream is = am.open("dare.txt");
-//            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//            fos = c.openFileOutput(DARE_FILE_NAME, Context.MODE_PRIVATE);
-//            String value = br.readLine();
-//            while (value != null) {
-//                dares.add(value);
-//                value = value + "\n";
-//                fos.write(value.getBytes());
-//                value = br.readLine();
-//                if  (value == null) break;
-//            }
-//            is = c.getAssets().open("truth.txt");
-//            br = new BufferedReader(new InputStreamReader(is));
-//            fos = c.openFileOutput(TRUTH_FILE_NAME, Context.MODE_PRIVATE);
-//            value = br.readLine();
-//            while (value != null) {
-//                truths.add(value);
-//                value = value + "\n";
-//                fos.write(value.getBytes());
-//                value = br.readLine();
-//                if  (value == null) break;
-//            }
-//            br.close();
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (fos != null) {
-//                    fos.close();
-//                }
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    // Fills the array lists
+    // This method is only called whenever a new GameMaker is made, which should only be once.
+    public void initArrayFill(Context c) {
+        AssetManager am = c.getAssets();
+        try {
+            InputStream is = am.open("dare.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String value = br.readLine();
+            while (value != null) {
+                dares.add(value);
+                value = br.readLine();
+                if  (value == null) break;
+            }
+            is = c.getAssets().open("truth.txt");
+            br = new BufferedReader(new InputStreamReader(is));
+            value = br.readLine();
+            while (value != null) {
+                truths.add(value);
+                value = br.readLine();
+                if (value == null) break;
+            }
+            tinyDB.putListString(CACHED_DARES, dares);
+            tinyDB.putListString(CACHED_TRUTHS, truths);
+            br.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // Return the size of the truth ArrayList
@@ -93,14 +81,14 @@ public class GameMaker {
 
 
     // Retrieve a random Truth from the ArrayList and remove it.
-    public String getTruth(){
+    public String getTruth() {
         if (getTruthSize() == 0) {
             Toast.makeText(cntx, "Out of truth questions! Using a dare question instead.", Toast.LENGTH_LONG).show();
             return getDare();
         }
         double finder = Math.random() * getTruthSize();
-        String phrase = truths.get((int)finder);
-        truths.remove((int)finder);
+        String phrase = truths.get((int) finder);
+        truths.remove((int) finder);
         return phrase;
     }
 
@@ -112,8 +100,8 @@ public class GameMaker {
             return getTruth();
         }
         double finder = Math.random() * getDareSize();
-        String phrase = dares.get((int)finder);
-        dares.remove((int)finder);
+        String phrase = dares.get((int) finder);
+        dares.remove((int) finder);
         return phrase;
     }
 
@@ -146,13 +134,12 @@ public class GameMaker {
     }
 
 
-
     public void test() {
         Log.d("BEEP", dares.size() + "");
     }
 
 
-    // Fills the arrays from shared preferences
+    // Fills the arrays from shared preferences by emptying and re-adding the lists to the DB
     public void reFillQuestions(Context c) {
         ArrayList<String> userDares = tinyDB.getListString(DARES_LIST);
         ArrayList<String> userTruths = tinyDB.getListString(TRUTHS_LIST);
@@ -169,7 +156,7 @@ public class GameMaker {
 
     // Update the tinyDB with a new question from the user
     // @param sentence - the new question to be added to dares
-    public void updateDaresDB(String sentence) {
+    public void addToDaresDB(String sentence) {
         dares = tinyDB.getListString(DARES_LIST);
         tinyDB.remove(DARES_LIST);
         dares.add(sentence);
@@ -179,7 +166,7 @@ public class GameMaker {
 
     // Update the tinyDB with a new question from the user
     // @param sentence - the new question to be added to
-    public void updateTruthsDB(String sentence) {
+    public void addToTruthsDB(String sentence) {
         truths = tinyDB.getListString(TRUTHS_LIST);
         tinyDB.remove(TRUTHS_LIST);
         truths.add(sentence);
@@ -187,55 +174,40 @@ public class GameMaker {
     }
 
 
-    public void removeDareFromDB(String sentence) {
-        dares = tinyDB.getListString(DARES_LIST);
-        for (int i = 0; i < dares.size(); i++) {
-            if (dares.get(i).equals(sentence)) {
-                dares.remove(i);
-            }
-        }
-        tinyDB.remove(DARES_LIST);
-        tinyDB.putListString(DARES_LIST, dares);
-    }
-
-
-    public void removeTruthFromDB(String sentence) {
-        truths = tinyDB.getListString(TRUTHS_LIST);
-        for (int i = 0; i < dares.size(); i++) {
-            if (truths.get(i).equals(sentence)) {
-                truths.remove(i);
-            }
-        }
+    // Add a different ArrayList to the Truths DB.
+    // For use when deleting a question
+    public void updateTruthDB(ArrayList<String> t) {
         tinyDB.remove(TRUTHS_LIST);
+        tinyDB.putListString(TRUTHS_LIST, t);
+    }
+
+    // Add a different ArrayList to the Dares DB.
+    // For use when deleting a question.
+    public void updateDareDB(ArrayList<String> d) {
+        tinyDB.remove(DARES_LIST);
+        tinyDB.putListString(DARES_LIST, d);
+    }
+
+
+    // Grab the original questions and store them in the database.
+    // This method is only for use when the Restore Questions button is pressed
+    public void restoreOriginalQuestions() {
+        Log.d("TEST", dares.size() + "");
+        ArrayList<String> userDares = tinyDB.getListString(CACHED_DARES);
+        ArrayList<String> userTruths = tinyDB.getListString(CACHED_TRUTHS);
+        dares.clear();
+        truths.clear();
+        tinyDB.remove(DARES_LIST);
+        tinyDB.remove(TRUTHS_LIST);
+        for (int i = 0; i < userDares.size(); i++) {
+            dares.add(userDares.get(i));
+        }
+        for (int i = 0; i < userTruths.size(); i++) {
+            truths.add(userTruths.get(i));
+        }
+        tinyDB.putListString(DARES_LIST, dares);
         tinyDB.putListString(TRUTHS_LIST, truths);
+        Log.d("TEST", dares.size() + "");
+
     }
-
-    // Fills the array lists
-    public void initWriteToDB(Context c) {
-        AssetManager am = c.getAssets();
-        try {
-            InputStream is = am.open("dare.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String value = br.readLine();
-            while (value != null) {
-                dares.add(value);
-                value = br.readLine();
-                if  (value == null) break;
-            }
-            is = c.getAssets().open("truth.txt");
-            br = new BufferedReader(new InputStreamReader(is));
-            value = br.readLine();
-            while (value != null) {
-                truths.add(value);
-                value = br.readLine();
-                if  (value == null) break;
-            }
-            br.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

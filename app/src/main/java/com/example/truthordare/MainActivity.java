@@ -1,7 +1,6 @@
 package com.example.truthordare;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 //  # Improve the layout of the "view questions" pages to make it easier for the user to know what they are looking at
 //  # Use internal storage to save user input for "Add Question". This will likely require redesigning how the files are read in the first place
 // Delete bad questions, edit others
-// Maybe should only be writing the new questions to internal storage? No, i think I need to use stringbuilder for delete somehow
 // Fix delete outofbounds indexing bug
 // Restore all option in case user deletes all questions or something
 
@@ -27,7 +25,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private Button initTruthBtn, initDareBtn, truthBtn, dareBtn, addQuestionBtn, addTruthBtn, addDareBtn, viewDaresHomePageBtn, viewTruthsHomePageBtn, viewTruthsBtn, viewDaresBtn;
-    private ImageButton backBtn, addQuestionBackBtn, viewDaresBackBtn, viewTruthsBackBtn;
+    private ImageButton settingsBtn, backBtn, addQuestionBackBtn, viewDaresBackBtn, viewTruthsBackBtn;
     private TextView chosenMode, randomPhrase;
     private EditText userQuestion;
     private GameMaker gm;
@@ -79,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 openViewTruthQuestions(0);
             }
         });
+        settingsBtn = findViewById(R.id.settingsBtn);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openViewSettings();
+            }
+        });
     }
 
 
@@ -110,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Open the addQuestion screen.
     private void openAddQuestion() {
+        // Initialize the widgets
         setContentView(R.layout.activity_new_question);
         userQuestion = findViewById(R.id.userQuestionEntry);
         addQuestionBackBtn = findViewById(R.id.addQuestionBackBtn);
@@ -121,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 if (userQuestion.getText().toString().length() == 0) {
                     return;
                 }
-                gm.updateTruthsDB(userQuestion.getText().toString());
+                // Add the users question to the database
+                gm.addToTruthsDB(userQuestion.getText().toString());
                 userQuestion.getText().clear();
             }
         });
@@ -131,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
                 if (userQuestion.getText().toString().length() == 0) {
                     return;
                 }
-                gm.updateDaresDB(userQuestion.getText().toString());
+                // Add the users question to the database
+                gm.addToDaresDB(userQuestion.getText().toString());
                 userQuestion.getText().clear();
             }
         });
@@ -145,12 +153,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void openViewSettings() {
+        //setContentView(R.layout.custom_settings_page);
+        gm.restoreOriginalQuestions();
+    }
+
+
     // Return to the home screen and re-fill both ArrayLists.
     private void backToHome() {
         setContentView(R.layout.activity_main);
         initWidgets();
         gm.reFillQuestions(this);
-        //gm.test();
     }
 
 
@@ -165,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
         chosenMode.setText(gm.switchTruth());
         randomPhrase.setText(gm.getTruth());
         initGamePageButtons();
-     //   gm.test();
     }
 
 
@@ -180,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         chosenMode.setText(gm.switchDare());
         randomPhrase.setText(gm.getDare());
         initGamePageButtons();
-        gm.test();
     }
 
 
@@ -234,6 +245,4 @@ public class MainActivity extends AppCompatActivity {
         TruthListViewAdapter truthAdapter = new TruthListViewAdapter(gm,this);
         listViewTruths.setAdapter(truthAdapter);
     }
-
-
 }

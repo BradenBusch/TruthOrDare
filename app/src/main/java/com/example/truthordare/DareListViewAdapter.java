@@ -44,7 +44,6 @@ public class DareListViewAdapter extends BaseAdapter {
     public View getView(final int i, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if (view == null) {
-            Log.d("BEEP", "Beep");
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.custom_listview, null);
         }
@@ -54,9 +53,7 @@ public class DareListViewAdapter extends BaseAdapter {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dares.remove(i);
-                gm.removeDareFromDB(getItem(i).toString());
-                //TODO something is going on with indexing, not sure what the bounds are
-                gm.test();
+                gm.updateDareDB(dares);
                 notifyDataSetChanged();
             }
         });

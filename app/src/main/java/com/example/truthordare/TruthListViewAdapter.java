@@ -22,6 +22,8 @@ public class TruthListViewAdapter extends BaseAdapter {
         this.gm = gm;
         this.truths = gm.getTruthList();
     }
+
+
     public int getCount() {
         return truths.size();
     }
@@ -49,9 +51,7 @@ public class TruthListViewAdapter extends BaseAdapter {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 truths.remove(i);
-                gm.removeTruthFromDB(getItem(i).toString());
-                //TODO something is going on with indexing, not sure what the bounds are
-                gm.test();
+                gm.updateTruthDB(truths);
                 notifyDataSetChanged();
             }
         });
