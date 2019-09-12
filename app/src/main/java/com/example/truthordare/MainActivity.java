@@ -24,12 +24,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button initTruthBtn, initDareBtn, truthBtn, dareBtn, addQuestionBtn, addTruthBtn, addDareBtn, viewDaresHomePageBtn, viewTruthsHomePageBtn, viewTruthsBtn, viewDaresBtn;
-    private ImageButton settingsBtn, backBtn, addQuestionBackBtn, viewDaresBackBtn, viewTruthsBackBtn;
+    private Button initTruthBtn, initDareBtn, truthBtn, dareBtn, addQuestionBtn, addTruthBtn, addDareBtn,
+            viewDaresHomePageBtn, viewTruthsHomePageBtn, viewTruthsBtn, viewDaresBtn, restoreQuestionsBtn;
+    private ImageButton settingsBtn, backBtn, addQuestionBackBtn, viewDaresBackBtn, viewTruthsBackBtn,
+            settingsBackBtn;
     private TextView chosenMode, randomPhrase;
     private EditText userQuestion;
-    private GameMaker gm;
     private ListView listViewDares, listViewTruths;
+    private GameMaker gm;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,8 +156,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void openViewSettings() {
-        //setContentView(R.layout.custom_settings_page);
-        gm.restoreOriginalQuestions();
+        setContentView(R.layout.custom_settings_page);
+        settingsBackBtn = findViewById(R.id.settingsBackBtn);
+        restoreQuestionsBtn = findViewById(R.id.restoreDefaultQuestionsBtn);
+        settingsBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backToHome();
+            }
+        });
+        restoreQuestionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gm.restoreOriginalQuestions();
+            }
+        });
     }
 
 

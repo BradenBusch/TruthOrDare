@@ -8,10 +8,11 @@ import java.io.*;
 import java.util.*;
 
 
+// Handles all of the Truth or Dare game functions, as well as the TinyDB functions.
 public class GameMaker {
 
-    private static final String DARE_FILE_NAME = "storageDare.txt";
-    private static final String TRUTH_FILE_NAME = "storageTruth.txt";
+    private static final String DARE_FILE_NAME = "dare.txt";
+    private static final String TRUTH_FILE_NAME = "truth.txt";
     private static final String DARES_LIST = "DaresList";
     private static final String TRUTHS_LIST = "TruthsList";
     private static final String CACHED_DARES = "CachedDares";
@@ -22,7 +23,6 @@ public class GameMaker {
     private TinyDB tinyDB;
 
 
-    // TODO delete is deleting one index off currently
 
     public GameMaker(Context cntx) {
         this.cntx = cntx; //class's context
@@ -42,7 +42,7 @@ public class GameMaker {
     public void initArrayFill(Context c) {
         AssetManager am = c.getAssets();
         try {
-            InputStream is = am.open("dare.txt");
+            InputStream is = am.open(DARE_FILE_NAME);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String value = br.readLine();
             while (value != null) {
@@ -50,7 +50,7 @@ public class GameMaker {
                 value = br.readLine();
                 if  (value == null) break;
             }
-            is = c.getAssets().open("truth.txt");
+            is = c.getAssets().open(TRUTH_FILE_NAME);
             br = new BufferedReader(new InputStreamReader(is));
             value = br.readLine();
             while (value != null) {
