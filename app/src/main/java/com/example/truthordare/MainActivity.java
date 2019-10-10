@@ -9,18 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-// TODO::::::: a "#" means this task was completed!
-
-// Making a theme selector, could use a global variable for which content pane to set
-//  # Make the background a gradient color scheme instead of just blue, then change buttons
-//  # Refactor filling the arrays code. Going to need a method for "one and done" storage for filling the questions
-// Will probably need a string builder to delete questions too.
-//  # Improve the layout of the "view questions" pages to make it easier for the user to know what they are looking at
-//  # Use internal storage to save user input for "Add Question". This will likely require redesigning how the files are read in the first place
-// Delete bad questions, edit others
-// Fix delete outofbounds indexing bug
-// Restore all option in case user deletes all questions or something
-
 
 public class MainActivity extends AppCompatActivity {
 

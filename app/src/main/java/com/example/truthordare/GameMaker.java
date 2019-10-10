@@ -23,15 +23,10 @@ public class GameMaker {
     private TinyDB tinyDB;
 
 
-
     public GameMaker(Context cntx) {
         this.cntx = cntx; //class's context
         this.tinyDB = new TinyDB(cntx); //class's DB
         initArrayFill(cntx); // fills arraylists with base questions from .txt files
-        ArrayList<String> test = tinyDB.getListString(DARES_LIST);
-        if (test != null) {
-            return;
-        }
         tinyDB.putListString(DARES_LIST, dares);
         tinyDB.putListString(TRUTHS_LIST, truths);
     }
@@ -105,7 +100,7 @@ public class GameMaker {
         return phrase;
     }
 
-
+    // Getters for the ArrayLists
     public ArrayList<String> getDareList() {
         return dares;
     }
@@ -131,11 +126,6 @@ public class GameMaker {
             return "Truth:";
         }
         return "Dare:";
-    }
-
-
-    public void test() {
-        Log.d("BEEP", dares.size() + "");
     }
 
 
@@ -192,7 +182,6 @@ public class GameMaker {
     // Grab the original questions and store them in the database.
     // This method is only for use when the Restore Questions button is pressed
     public void restoreOriginalQuestions() {
-        Log.d("TEST", dares.size() + "");
         ArrayList<String> userDares = tinyDB.getListString(CACHED_DARES);
         ArrayList<String> userTruths = tinyDB.getListString(CACHED_TRUTHS);
         dares.clear();
@@ -207,7 +196,5 @@ public class GameMaker {
         }
         tinyDB.putListString(DARES_LIST, dares);
         tinyDB.putListString(TRUTHS_LIST, truths);
-        Log.d("TEST", dares.size() + "");
-
     }
 }
